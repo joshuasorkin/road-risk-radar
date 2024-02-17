@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Utu's Wild Words" />
+    <meta property="og:description" content="An AI-generated blend of word scramble and fine art" />
+    <meta property="og:url" content="https://utuswildwords.art" />
+    <meta property="og:image" content="https://utuswildwords.art/utu-generating-game.png" />
+    <title>Utu's Wild Words</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FK6QKFEM2X"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FK6QKFEM2X');
+</script>
+<body>
+    <div id="game-area">
+        <h1 id="gameTitle">Utu's Wild Words</h1>
+        <div id="image-container">
+            <img id="game-image" src="" alt="Scramble Clue" hidden>
+            <div id="victory-message" hidden></div>
+        </div>
+        <p id="scrambled-word"></p>
+        <svg id="rack-container" hidden width="400" height="100">
+            <rect id="rack" x="0" y="0" width="380" height="40" class="rack" />
+            <rect id="drag-tab-bottom" x="0" y="0" width="380" height="40" class="rack" />
+        </svg>
+        <p id="game-message"></p>
+        <div id="footer">
+            <a href="https://linktr.ee/sigilToNoise" target="_blank" id="linkedImageContainer">
+                <img src="/linktree-qr.jpg" alt="Linktree">
+            </a>
+            <div id="score-container">
+                <p>Score: <span id="score">0</span></p>
+            </div>
+            <svg class="skip-button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <!-- Box -->
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2" fill="transparent" stroke="black" stroke-width="2"/>
+              
+                <!-- Triangles -->
+                <polygon points="10 7 14 12 10 17" fill="black"/>
+                <polygon points="14 7 18 12 14 17" fill="black"/>
+            </svg>
+        </div>
+    </div>
+    <script src="/script.js"></script>
+    <script src="/rack.js"></script>
+</body>
+</html>
