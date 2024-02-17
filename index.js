@@ -11,8 +11,8 @@ app.get('/api/new-route', async (req, res) => {
 
         // Retrieve score and language from the request
         const origin = req.query.origin;
-        const destination = req.session.destination;
-
+        const destination = req.query.destination;
+        console.log({origin});
         // Array to hold query parameters
         const queryParams = [];
 
@@ -25,7 +25,7 @@ app.get('/api/new-route', async (req, res) => {
         if (destination !== undefined) {
             queryParams.push(`destination=${encodeURIComponent(destination)}`);
         }
-
+        console.log({queryParams});
         // If there are any query parameters, append them to the URL
         if (queryParams.length > 0) {
             url += '&' + queryParams.join('&');
