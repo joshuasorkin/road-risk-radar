@@ -2,14 +2,15 @@ const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
 const polyline = require('@mapbox/polyline');
+const axios = require('axios');
 dotenv.config();
 const app = express();
 const port = 3000;
 
 function getAllPolylines(googleMapsResponse){
-    const routes = googleMapsResponse.routes;
+    const routes = googleMapsResponse.data.routes;
     let allPolylines = [];
-
+    console.log({routes});
     routes.forEach(route => {
       route.legs.forEach(leg => {
         leg.steps.forEach(step => {
@@ -53,11 +54,11 @@ app.get('/api/new-route', async (req, res) => {
         console.log({url});
 
         // Fetching the data from the URL
-        const response = await fetch(url);
+        const response = await axios.get(url);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        //const data = await response.json();
+        console.log({response});
         const polylines = getAllPolylines(response);
         console.log({polylines});
         //res.json(data);
