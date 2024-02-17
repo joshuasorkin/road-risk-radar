@@ -28,7 +28,7 @@ app.get('/api/new-route', async (req, res) => {
         console.log({queryParams});
         // If there are any query parameters, append them to the URL
         if (queryParams.length > 0) {
-            url += '&' + queryParams.join('&');
+            url = process.env.GOOGLE_MAPS_URL + '&' + queryParams.join('&');
         }
 
         console.log({url});
