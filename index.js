@@ -21,14 +21,14 @@ app.get('/api/new-route', async (req, res) => {
         // Array to hold query parameters
         const queryParams = [];
 
-        // Check if score is not undefined and append it to queryParams
-        if (score !== undefined) {
-            queryParams.push(`score=${encodeURIComponent(score)}`);
+        // Check if origin is not undefined and append it to queryParams
+        if (origin !== undefined) {
+            queryParams.push(`origin=${encodeURIComponent(origin)}`);
         }
 
-        // Check if language is not undefined and append it to queryParams
-        if (language !== undefined) {
-            queryParams.push(`language=${encodeURIComponent(language)}`);
+        // Check if origin is not undefined and append it to queryParams
+        if (destination !== undefined) {
+            queryParams.push(`destination=${encodeURIComponent(destination)}`);
         }
 
         // If there are any query parameters, append them to the URL
