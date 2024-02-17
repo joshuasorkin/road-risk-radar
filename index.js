@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 function getAllPolylines(googleMapsResponse){
-    const routes = googleMapsResponse.data.routes;
+    const routes = googleMapsResponse.routes;
     let allPolylines = [];
 
     routes.forEach(route => {
