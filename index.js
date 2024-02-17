@@ -1,10 +1,29 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
+const polyline = require('@mapbox/polyline');
 dotenv.config();
 const app = express();
 const port = 3000;
 
+function getAllPolylines(googleMapsResponse){
+    const routes = googleMapsResponse.data.routes;
+    let allPolylines = [];
+
+    routes.forEach(route => {
+      route.legs.forEach(leg => {
+        leg.steps.forEach(step => {
+          const stepPolyline = step.polyline.points;
+          // Decode polyline points to latitude and longitude pairs
+          const decodedPolyline = polyline.decode(stepPolyline);
+          // Append decoded polyline coordinates to allPolylines array
+          allPolylines = allPolylines.concat(decodedPolyline);
+        });
+      });
+    });
+
+    return allPolylines;
+}
 app.get('/api/new-route', async (req, res) => {
     try {
         console.log("generating route...");
@@ -38,8 +57,10 @@ app.get('/api/new-route', async (req, res) => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        res.json(data);
+        //const data = await response.json();
+        const polylines = getAllPolylines(response);
+        console.log({polylines});
+        //res.json(data);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
