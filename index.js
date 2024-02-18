@@ -62,6 +62,20 @@ app.get('/api/new-route', async (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+    fs.readFile(path.join(__dirname, 'public', 'index.html'), 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading index.html file:', err);
+            res.status(500).send('Server error');
+            return;
+        }
+        // Replace a placeholder in your HTML with the actual API key
+        const result = data.replace(/YOUR_GOOGLE_MAPS_API_KEY/g, process.env.GOOGLE_MAPS_API_KEY);
+        res.send(result);
+    });
+});
+
+// Static files middleware for CSS, JS, etc.
 app.use(express.static('public'));
 
 app.listen(port, () => {
