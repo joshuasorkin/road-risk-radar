@@ -72,7 +72,7 @@ app.get('/api/new-route', async (req, res) => {
                 return `[${coordPair.toString()}]: risk level unavailable`;
             });
         });
-
+        console.log("submitting all promises");
         const riskLevels = await Promise.all(trafficDataPromises);
 
         /*
