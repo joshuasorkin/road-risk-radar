@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const polyline = require('@mapbox/polyline');
 const axios = require('axios');
+const fs = require('fs');
 dotenv.config();
 const app = express();
 const port = 3000;
