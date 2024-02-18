@@ -12,7 +12,6 @@ document.getElementById('getRoute').addEventListener('click', async function() {
         document.getElementById('coordinates').value = JSON.stringify(coordinates, null, 2);
         
         // Display map
-        const mapUrl = `https://www.google.com/maps/embed/v1/directions?key=YOUR_GOOGLE_MAPS_API_KEY&origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&avoid=tolls|highways`;
         document.getElementById('map').innerHTML = `<iframe width="100%" height="100%" frameborder="0" style="border:0" src="${mapUrl}" allowfullscreen></iframe>`;
     } catch (error) {
         console.error('Error fetching route:', error);
