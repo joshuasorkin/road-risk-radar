@@ -57,7 +57,26 @@ app.get('/api/new-route', async (req, res) => {
         // Fetching the data from the URL
         const response = await axios.get(url);
         const polylines = getAllPolylines(response);
-        res.send(polylines);
+
+        /* 
+        // Fetch risk levels in parallel for all coordinate pairs
+        const riskLevelsPromises = polylines.map(coordPair =>
+            axios.get(`http://trafficsafety.com?coord1=${coordPair[0]}&coord2=${coordPair[1]}`)
+                .then(response => `[${coordPair.toString()}]: risk level ${response.data}`)
+                .catch(error => `[${coordPair.toString()}]: risk level unavailable`)
+        );
+
+        const riskLevels = await Promise.all(riskLevelsPromises);
+        */
+
+         // Generate synthetic risk levels for all coordinate pairs
+         const riskLevels = polylines.map(coordPair => {
+            // Generate a random risk level between 0 and 100
+            const riskLevel = Math.floor(Math.random() * 101); // 101 because Math.random() is exclusive of 1
+            return `[${coordPair.toString()}]: risk level ${riskLevel}`;
+        });
+
+        res.send(riskLevels);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
