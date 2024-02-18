@@ -1,240 +1,31 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+body, html {
     margin: 0;
-    background-color: #f4f4f4;
-    background: linear-gradient(to bottom, orange, #8B4513); /* Gold to SaddleBrown */
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-    border: 1px solid #000; /* Optional: adds a border */
-    background-attachment: fixed;  
-}
-
-@keyframes rainbow {
-    0%, 100% { background-image: linear-gradient(to right, red, orange); }
-    8% { background-image: linear-gradient(to right, orange, yellow); }
-    16% { background-image: linear-gradient(to right, yellow, green); }
-    25% { background-image: linear-gradient(to right, green, blue); }
-    33% { background-image: linear-gradient(to right, blue, indigo); }
-    41% { background-image: linear-gradient(to right, indigo, violet); }
-    50% { background-image: linear-gradient(to right, violet, indigo); }
-    58% { background-image: linear-gradient(to right, indigo, blue); }
-    66% { background-image: linear-gradient(to right, blue, green); }
-    75% { background-image: linear-gradient(to right, green, yellow); }
-    83% { background-image: linear-gradient(to right, yellow, orange); }
-    91% { background-image: linear-gradient(to right, orange, red); }
-}
-
-.rainbow-text {
-    animation: rainbow 2s linear infinite, expandContract 2s ease-in-out infinite;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-#game-area {
-    text-align: center;
-    align-items: center;
-    padding: 20px;
-    /*background: linear-gradient(to bottom, orange, salmon);*/
-    display: block;
-    width: 100%; /* Or set a specific width */
-    margin: auto; /* Centering if needed */
-    position: relative; /* Added to position children absolutely within it */
-}
-
-#game-image {
-    max-width: 100%;  /* Maximum width of 100% of the viewport width */
-    max-height: 50vh; /* Maximum height of 50% of the viewport height */
-    height: auto;     /* Maintain aspect ratio */
-}
-
-#overlay-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-#image-container {
-    position: relative;
-    max-width: 100%;
-    max-height: 50vh;
-}
-
-#victory-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #FFF; /* Choose a color that stands out */
-    font-size: 2em; /* Adjust size as needed */
-    font-weight: bold;
-    text-align: center;
-    display: none; /* Initially hidden */
-    animation: glitter 1s linear infinite;
-}
-
-@keyframes glitter {
-    0% {
-        color: #FFC0CB; /* Light Pink */
-        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FF8C00, 0 0 70px #FF8C00, 0 0 80px #FF8C00, 0 0 100px #FF8C00, 0 0 150px #FF8C00;
-    }
-    25% {
-        color:dodgerblue;
-        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FF8C00, 0 0 70px #FF8C00, 0 0 80px #FF8C00, 0 0 100px #FF8C00, 0 0 150px #FF8C00;
-    }
-    50% {
-        color: #FFFFFF; /* White */
-        text-shadow: 0 0 5px #E0FFFF, 0 0 10px #E0FFFF, 0 0 15px #E0FFFF, 0 0 20px #E0FFFF, 0 0 35px #E0FFFF, 0 0 40px #E0FFFF, 0 0 50px #E0FFFF, 0 0 75px #E0FFFF;
-    }
-    75% {
-        color:deeppink;
-        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FF8C00, 0 0 70px #FF8C00, 0 0 80px #FF8C00, 0 0 100px #FF8C00, 0 0 150px #FF8C00;        
-    }
-    100% {
-        color: #FFC0CB; /* Light Pink */
-        text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FF8C00, 0 0 70px #FF8C00, 0 0 80px #FF8C00, 0 0 100px #FF8C00, 0 0 150px #FF8C00;
-    }
-}
-
-/* Define the keyframes for expanding and contracting */
-@keyframes expandContract {
-    0%, 100% {
-      transform: scale(1); /* Normal size */
-    }
-    50% {
-      transform: scale(1.5); /* 1.5 times the normal size */
-    }
-  }
-
-#user-guess {
-    margin-top: 10px;
-}
-
-.grid-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: grid;
-    pointer-events: none; /* So it doesn't interfere with image interaction */
-}
-.grid-cell {
-    border: 1px solid #fff; /* Adjust the border as needed */
-}
-
-
-#gameTitle {
-    white-space: nowrap;
-    font-family: 'Brush Script MT', cursive; /* For a rustic look */
-    color: #4b2e09; /* Earthy brown color */
-    text-align: center;
-    font-size: 2em;
-    /* Additional styling */
-    margin-top: 0;
-}
-
-
-#scrambled-word {
-    display:none;
-}
-
-
-@keyframes shimmer {
-    0% {
-        background-position: -500%;
-    }
-    100% {
-        background-position: 500%;
-    }
-}
-
-@keyframes wave {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(-10px);
-    }
-}
-
-#linkedImageContainer img {
-    max-width: 40%; /* Ensures the image is responsive */
-    height: auto;    /* Maintains the aspect ratio */
-    display: block;  /* Remove any extra space below the image */
-    margin: 20px auto;  /* Center the image if it's smaller than the container */
-}
-
-#game-area, #linkedImageContainer {
-    display: block;
-    width: 100%; /* Or set a specific width */
-    margin: auto; /* Centering if needed */
-}
-
-#footer {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-#score-container {
-    /* Add your desired styles for the score container */
-    padding: 20px;
-    border: 1px solid #ddd; /* example border */
-    border-radius: 5px; /* rounded corners */
-}
-
-.rack {
-    fill: #deb887; /* Burlywood color */
-    stroke: #a52a2a; /* Brown color */
-    stroke-width: 2px;
-}
-.tile {
-    fill: #f5f5f5; /* White smoke color */
-    stroke: #8b4513; /* Saddle brown color */
-    stroke-width: 1px;
-}
-
-.tile-mismatch {
-    fill: red;
-    stroke: #8b4513;
-    stroke-width: 1px;
-}
-.tile-text {
-    font-size: 14px;
+    padding: 0;
     font-family: Arial, sans-serif;
-    text-anchor: middle;
-    dominant-baseline: middle;
-}
-
-.no-select {
-    user-select: none;
-    -moz-user-select: none; /* Firefox */
-    -webkit-user-select: none; /* Chrome/Safari */
-    -ms-user-select: none; /* IE/Edge */
-}
-
-#rack-container {
-    position: relative;
-    justify-content: center;
-    height: auto; /* Maintain aspect ratio */
-    display: none; /* hide at start */
-    margin: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-@keyframes bounce {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    20%, 80% {
-      transform: translateY(-10px);
-    }
-    40%, 60% {
-      transform: translateY(-5px);
-    }
   }
+  
+  #app {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  input, textarea, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  

@@ -55,13 +55,8 @@ app.get('/api/new-route', async (req, res) => {
 
         // Fetching the data from the URL
         const response = await axios.get(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        console.log({response});
         const polylines = getAllPolylines(response);
-        console.log({polylines});
-        //res.json(data);
+        res.send(polylines);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
