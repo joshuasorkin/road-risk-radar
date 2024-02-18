@@ -59,34 +59,42 @@ app.get('/api/new-route', async (req, res) => {
         const polylines = getAllPolylines(response);
 
         // Submit each coordinate pair to the trafficresponse API
-        const trafficDataPromises = polylines.map(coordPair => {
-            return axios.post('https://lululopez.app.modelbit.com/v1/trafficv1_deploy/latest', {
-                data: coordPair // Assuming coordPair is in the format [latitude, longitude]
-            })
-            .then(response => {
-                const incidentRatio = response.data.data[0]; // Assuming the first element is INCIDENT_RATIO
-                return `[${coordPair.toString()}]: risk level ${incidentRatio.toFixed(2)}`; // Format to 2 decimal places
-            })
-            .catch(error => {
-                console.error('Error fetching traffic data:', error);
-                return `[${coordPair.toString()}]: risk level unavailable`;
-            });
-        });
-        console.log("submitting all promises");
-        const riskLevels = await Promise.all(trafficDataPromises);
+        // Submit each coordinate pair to the trafficresponse API
+        const trafficDataPromises = polylines.map(coordPair =>
+            axios.post('https://lululopez.app.modelbit.com/v1/trafficv1_deploy/latest', { data: coordPair })
+                .then(response => {
+                    const incidentRatio = response.data.data[0]; // Assuming the first element is INCIDENT_RATIO
+                    return {
+                        coords: coordPair,
+                        riskLevel: incidentRatio
+                    };
+                })
+                .catch(error => {
+                    console.error('Error fetching traffic data:', error);
+                    return {
+                        coords: coordPair,
+                        riskLevel: null // Use null or a specific value to indicate an error
+                    };
+                })
+        );
 
-        /*
+        const trafficData = await Promise.all(trafficDataPromises);
 
-         // Generate synthetic risk levels for all coordinate pairs
-         const riskLevels = polylines.map(coordPair => {
-            // Generate a random risk level between 0 and 100
-            const riskLevel = Math.floor(Math.random() * 11); // 101 because Math.random() is exclusive of 1
-            return `[${coordPair.toString()}]: risk level ${riskLevel}`;
-        });
+        // Calculate the average risk level
+        const totalRiskLevel = trafficData.reduce((acc, curr) => acc + (curr.riskLevel || 0), 0);
+        const validRiskLevels = trafficData.filter(data => data.riskLevel !== null).length;
+        const averageRiskLevel = (validRiskLevels > 0) ? (totalRiskLevel / validRiskLevels) : 0;
 
-        */
+        // Format the output, including the average risk level at the top
+        const riskLevelStrings = trafficData.map(data => 
+            `[${data.coords.toString()}]: risk level ${data.riskLevel !== null ? data.riskLevel.toFixed(2) : 'unavailable'}`
+        );
 
-        res.send(riskLevels);
+        // Prepend the average risk level to the list
+        riskLevelStrings.unshift(`Average risk level: ${averageRiskLevel.toFixed(2)}`);
+
+        res.send(riskLevelStrings);
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
