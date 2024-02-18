@@ -58,23 +58,33 @@ app.get('/api/new-route', async (req, res) => {
         const response = await axios.get(url);
         const polylines = getAllPolylines(response);
 
-        /* 
-        // Fetch risk levels in parallel for all coordinate pairs
-        const riskLevelsPromises = polylines.map(coordPair =>
-            axios.get(`http://trafficsafety.com?coord1=${coordPair[0]}&coord2=${coordPair[1]}`)
-                .then(response => `[${coordPair.toString()}]: risk level ${response.data}`)
-                .catch(error => `[${coordPair.toString()}]: risk level unavailable`)
-        );
+        // Submit each coordinate pair to the trafficresponse API
+        const trafficDataPromises = polylines.map(coordPair => {
+            return axios.post('https://lululopez.app.modelbit.com/v1/trafficv1_deploy/latest', {
+                data: coordPair // Assuming coordPair is in the format [latitude, longitude]
+            })
+            .then(response => {
+                const incidentRatio = response.data.data[0]; // Assuming the first element is INCIDENT_RATIO
+                return `[${coordPair.toString()}]: risk level ${incidentRatio.toFixed(2)}`; // Format to 2 decimal places
+            })
+            .catch(error => {
+                console.error('Error fetching traffic data:', error);
+                return `[${coordPair.toString()}]: risk level unavailable`;
+            });
+        });
 
-        const riskLevels = await Promise.all(riskLevelsPromises);
-        */
+        const riskLevels = await Promise.all(trafficDataPromises);
+
+        /*
 
          // Generate synthetic risk levels for all coordinate pairs
          const riskLevels = polylines.map(coordPair => {
             // Generate a random risk level between 0 and 100
-            const riskLevel = Math.floor(Math.random() * 101); // 101 because Math.random() is exclusive of 1
+            const riskLevel = Math.floor(Math.random() * 11); // 101 because Math.random() is exclusive of 1
             return `[${coordPair.toString()}]: risk level ${riskLevel}`;
         });
+
+        */
 
         res.send(riskLevels);
     } catch (error) {
